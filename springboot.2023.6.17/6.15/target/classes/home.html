@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+</head>
+<body>
+    你已经登录成功！
+    <!--form：表单；th：表头；action：设置提交的服务器地址；method：设置提交的方式为GET（默认）或POST-->
+    <form th:action="@{/logout}" action="/login" method="post">
+        <!--双标签-->
+        <input type="submit" value="退出系统"/>  <!--单标签，引号内为属性值-->
+    </form>
+</body>
+</html>

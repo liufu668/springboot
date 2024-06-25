@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <script>
+        //点击图片就能更新验证码
+        function updateVerifyCode() {
+            // 获取当前时间戳，防止浏览器缓存
+            const timestamp = new Date().getTime();
+
+            // 获取验证码图片元素
+            const vcImage = document.getElementById('vcImage');
+
+            // 更新图片的 src 属性，添加时间戳参数
+            vcImage.src = `/verifyCode?time=${timestamp}`;
+        }
+    </script>
+</head>
+<body>
+
+<div>
+    <!-- 当Spring Security验证失败时,会在URL上附加error查询参数,形式为:http://localhost:8080/login?error -->
+    <div class="error" th:if="${param.error}">用户名或密码错误</div>
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="username">用户名：</label>
+            <input
+                    id="username"
+                    name="username"
+                    placeholder="请输入用户名"
+                    type="text"
+                    required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="password">密码：</label>
+            <input
+                    id="password"
+                    name="password"
+                    placeholder="请输入密码"
+                    type="password"
+                    required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="code">验证码：</label>
+            <input
+                    id="code"
+                    name="code"
+                    type="text"
+                    placeholder="点击图片更换验证码"
+                    required
+            />
+            <img
+                    id="vcImage"
+                    src="/verifyCode?time="
+                    alt="验证码"
+                    onclick="updateVerifyCode()"
+            >
+        </div>
+
+        <div class="submit">
+            <input type="submit" value="登录"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

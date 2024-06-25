@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.thymeleaf.org/thymeleaf-extras-shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>主页面</title>
+    <!--引入Bootstrap国内CDN库-->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <h1>主页面</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <!--会话中没有用户,即用户未登录,显示"登录"超链接-->
+            <p th:if="${session.loginUser == null}">
+                <a th:href="@{/login}">登录</a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <!--会话中保存了用户,即用户已登录,显示"注销"超链接-->
+            <p th:if="${session.loginUser != null}">
+                <a th:href="@{/logout}">注销</a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <div shiro:haspermission="user:add">
+                <a th:href="@{/user/add}">添加</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <div shiro:haspermission="user:delete">
+                <a th:href="@{/user/delete}">删除</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

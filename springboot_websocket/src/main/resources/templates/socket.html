@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        var websocket=null;
+        var local=window.location;//当前页面的URL地址
+        var url="ws://"+local.host+"/test";//长链接地址
+        if("WebSocket" in window){
+            websocket=new WebSocket(url);//使用new关键字创建WebSocket端点类对象
+        }else{
+            alert("当前浏览器不支持长链接,请更换浏览器")
+        }
+        //连接发生错误触发的方法
+        websocket.onerror=function () {
+            document.getElementById("message").innerHTML+="<br/>发生错误";
+            websocket.close();
+        }
+        //连接成功建立触发的方法
+        websocket.onopen=function (event) {
+            document.getElementById("message").innerHTML+="<br/>连接已创建";
+        }
+        //连接关闭触发的方法
+        websocket.onclose=function () {
+            document.getElementById("message").innerHTML+="<br/>连接已关闭";
+        }
+        //接收到消息触发的方法
+        //event是接收消息事件的对象,调用对象event的data属性,即可获取服务端的消息内容
+        websocket.onmessage=function (event) {
+            //将服务端发来的消息拼接到div中
+            document.getElementById("message").innerHTML+="<br/>"+event.data;
+        }
+        //监听窗口关闭事件,当窗口关闭后要主动关闭websocket连接
+        websocket.opbeforeunload=function () {
+            websocket.close();
+        }
+        //单击按钮触发的方法
+        function send() {
+            var message=document.getElementById("text").value;//获取输入框中的文本
+            websocket.send(message);//发送给服务端
+        }
+    </script>
+</head>
+<body>
+    <!--一个文本输入框-->
+    <input type="text" id="text">
+    <!--一个发送按钮-->
+    <input type="button" id="btn" value="发送" onclick="send()"/>
+    <!--换行-->
+    <br/>
+    <!--显示日志文本-->
+    <div id="message"></div>
+</body>
+</html>

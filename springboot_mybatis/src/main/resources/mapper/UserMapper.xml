@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.springboot_mybatis.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.study.springboot_mybatis.pojo.User">
+    <!--
+    1.column 指定表字段名或其别名
+    2.property 指定 javaBean 的属性名
+    3.jdbcType 指定表字段类型
+    4.javaType 指定类属性的java类型
+    -->
+        <result column="id" jdbcType="INTEGER" property="id" javaType="java.lang.Integer"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname" javaType="java.lang.String"/>
+        <result column="age" jdbcType="INTEGER" property="age" javaType="java.lang.Integer"/>
+        <result column="roles" jdbcType="INTEGER" property="id" javaType="java.lang.Integer"/>
+        <result column="address" jdbcType="VARCHAR" property="address" javaType="java.lang.String"/>
+    </resultMap>
+
+    <!--useGeneratedKeys：是够获取自动增长的主键值。true表示获取
+        keyProperty ：指定将获取到的主键值封装到哪儿个属性里-->
+    <insert id="save" parameterType="com.study.springboot_mybatis.pojo.User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uname != null">
+                uname,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="roles != null">
+                roles,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                <!--#{id} 是 MyBatis 的参数占位符，表示将会传入的参数中的 id 字段的值替换到此处。-->
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uname != null">
+                #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+            <if test="roles != null">
+                #{roles,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.study.springboot_mybatis.pojo.User">
+        update t_user
+        <!--set 标签可以用于动态包含需要更新的列，忽略其它不更新的列
+            下面是ID不变,其他信息动态更新,即通过ID找到要修改的用户-->
+        <set>
+            <!--<trim> 标签用于修剪 SQL 语句中不必要的部分。
+            这里设置了 prefix、suffix 和 suffixOverrides 属性为空，
+            表示不添加任何前缀和后缀，并且去除 SQL 语句末尾可能多余的逗号。
+            根据条件使用了 <if> 标签来判断是否更新相应的列-->
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <!--使用了 <if> 标签来判断是否更新相应的列。如果条件为真，则添加对应的更新语句-->
+                <if test="uname != null">
+                    uname = #{uname,jdbcType=VARCHAR},
+                </if>
+                <if test="age != null">
+                    age = #{age},
+                </if>
+                <if test="roles != null">
+                    roles = #{roles,jdbcType=INTEGER},
+                </if>
+                <if test="address != null">
+                    address = #{address,jdbcType=VARCHAR},
+                </if>
+            </trim>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete
+        from t_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--查询全部记录-->
+    <select id="selectUserList" resultType="com.study.springboot_mybatis.pojo.User">
+        select * from t_user;
+    </select>
+
+    <select id="findById" resultType="com.study.springboot_mybatis.pojo.User">
+        select * from t_user where id = #{id};
+    </select>
+</mapper>
+

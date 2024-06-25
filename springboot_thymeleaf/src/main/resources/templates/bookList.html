@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--导入Thymeleaf的命名空间-->
+<html lang="en" xmlns: xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>图书列表</title>
+</head>
+<body>
+<table border="1" width="100%">
+    <tr>
+        <td>序号</td>
+        <td>书名</td>
+        <td>作者</td>
+    </tr>
+    <!--${}: 变量表达式,Thymeleaf获取一个值的语法是th:text="${title}"-->
+    <tr th:each="book:${books}">
+        <!--四个单元格内容-->
+        <td th:text="${book.id}"/>
+        <td th:text="${book.name}"/>
+        <td th:text="${#dates.format(book.createTime,'yyyy-MM-dd')}"/>
+        <td th:text="${book.author}"/>
+    </tr>
+</table>
+
+</body>
+</html>

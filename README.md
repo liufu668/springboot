@@ -1,4 +1,4 @@
-上述项目的完整代码在此，代码的详细说明，可以查阅我的博客里的文章：https://blog.csdn.net/weixin_72052233?type=blog
+我在学习vhr微人事项目时，零散地学习了一些springboot相关的小项目，整理后，完整的代码如上，详细的解析如下。
 
 jwt：http://t.csdnimg.cn/IaYYS
 
